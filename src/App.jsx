@@ -1,6 +1,27 @@
 import { useState, useEffect } from "react";
 import { roles, quizzes } from "./quizData";
 
+const BOT_TOKEN = "8729123239:AAEu0_Gt1BJlTRo9Mc3VfyG5B56fTNwIGfU";
+const CHAT_ID = "257422754";
+
+async function sendToTelegram(name, roleLabel, scorePct, correctCount, total, wrong) {
+  const passed = scorePct >= 75;
+  const emoji = scorePct >= 90 ? "🏆" : scorePct >= 75 ? "✅" : "❌";
+  const wrongList = wrong.length > 0
+    ? "\n\n📚 Ошибки:\n" + wrong.map((w, i) => `${i+1}. ${w.q.q}`).join("\n")
+    : "";
+  const text = `${emoji} Результат аттестации\n\n👤 ${name}\n📋 Должность: ${roleLabel}\n📊 Результат: ${Math.round(scorePct)}% (${correctCount}/${total})\n${passed ? "✅ Пройдено" : "❌ Не пройдено"}${scorePct >= 90 ? "\n🎉 Бонус +500 ₽" : ""}${wrongList}\n\n🕐 ${new Date().toLocaleString("ru-RU", {timeZone: "Europe/Moscow"})}`;
+  try {
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({chat_id: CHAT_ID, text, parse_mode: "HTML"})
+    });
+  } catch(e) {}
+}
+
+
+
 const COLORS = {
   purple: "#6A1B9A",
   purpleLight: "#9C27B0",
