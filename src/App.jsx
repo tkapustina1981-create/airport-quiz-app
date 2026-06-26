@@ -140,6 +140,9 @@ export default function App() {
       } else {
         setAnswers(newAnswers);
         setScreen("result");
+        const pct = (newAnswers.filter(a=>a.chosen===a.correct).length / quiz.questions.length) * 100;
+        const wrong = newAnswers.map((a,i)=>({...a,q:quiz.questions[i]})).filter(a=>a.chosen!==a.correct);
+        sendToTelegram(name || nameInput, role.label, pct, newAnswers.filter(a=>a.chosen===a.correct).length, quiz.questions.length, wrong);
       }
     }, 900);
   }
