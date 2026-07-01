@@ -12,7 +12,7 @@ async function sendToTelegram(name, roleLabel, scorePct, correctCount, total, wr
     : "";
   const text = `${emoji} Результат аттестации\n\n👤 ${name}\n📋 Должность: ${roleLabel}\n📊 Результат: ${Math.round(scorePct)}% (${correctCount}/${total})\n${passed ? "✅ Пройдено" : "❌ Не пройдено"}${scorePct >= 90 ? "\n🎉 Бонус +500 ₽" : ""}${wrongList}\n\n🕐 ${new Date().toLocaleString("ru-RU", {timeZone: "Europe/Moscow"})}`;
   try {
-    const ids = [CHAT_ID, "439073279"];
+    const ids = [CHAT_ID, "439073279", "545884824"];
     await Promise.all(ids.map(id =>
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
